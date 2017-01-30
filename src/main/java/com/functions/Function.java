@@ -33,114 +33,11 @@ public class Function
     public Double solve(Double x)
     {
         String function = this.iniFunction;
-        function = function.replaceAll("x", "*"+x);
-        int length = function.length();
+        function = arrangeExpression(function);
+        function = function.replaceAll("x", Double.toString(x));
+        
         System.out.println(function);
-        for(int i = 0; i < length; i ++)
-        {
-            System.out.println(function);
-            char tmp = function.charAt(i);
-            if (tmp == '^')
-            {
-                //System.out.println(i);
-
-                String tmppow = "";
-                String tmpval = "";
-
-                int powLen = 0;
-                int valLen = 0;
-
-                for(int j = i+1; j < length;j++)
-                {
-                    char symbol = function.charAt(j);
-                    if(symbol=='+'||symbol=='-'||symbol=='*'||symbol=='/'||symbol=='%'||symbol=='^'||symbol=='('||symbol==')') {
-                        tmppow = function.substring(i+1,j);
-                        break;
-                    } else {
-                        tmppow = function.substring(i+1,j+1);
-                    }
-                    powLen++;
-                }
-
-
-                for(int j = i-1; j >= 0;j--)
-                {
-                    char symbol = function.charAt(j);
-                    if ( symbol == 'x'){
-
-                        tmpval = "x";
-                        break;
-
-                    } else {
-
-                        if(symbol=='+'||symbol=='-'||symbol=='*'||symbol=='/'||symbol=='%'||symbol=='^'||symbol=='('||symbol==')') {
-                            tmpval = function.substring(j+1,i);
-                            break;
-                        } else {
-                            tmpval = function.substring(j,i);
-                        }
-                    }
-                    valLen++;
-                }
-
-
-                //System.out.println("pow len: " + powLen);
-                //System.out.println("val len: " + valLen);
-
-                //function = function.substring(0,i+1)+Double.toString(pow)+function.substring(i+powLen);
-                //function = function.substring(0,i+1)+Double.toString(val)+function.substring(i+valLen);
-
-                double pow = 0.0,val = 0.0;
-                if (tmppow.equals("x")) {
-                    pow = x;
-                } else {
-                    pow = Double.parseDouble(tmppow);
-                }
-
-                if (tmpval.equals("x")) {
-                     val = x;
-                 } else {
-                     val = Double.parseDouble(tmpval);
-                 }
-
-                 function = function.substring(0,i-valLen)+Double.toString(val)+"^"+Double.toString(pow)+function.substring(i+1+powLen);
-                 int tmpValLen = valLen;
-                 powLen = Double.toString(pow).length();
-                 valLen = Double.toString(val).length();
-                 i += valLen-tmpValLen;
-
-                 //System.out.println(function + "####################");
-
-
-                //powLen = Double.toString(pow).length();
-                //valLen = Double.toString(pow).length();
-
-                //System.out.println(powLen);
-                //System.out.println(valLen);
-                String rslt = Double.toString(Math.pow(val, pow));
-
-                try{
-
-                    char prev = function.charAt(i-2);
-                    if (prev == '0'||prev == '1'||prev == '2'||prev == '3'||prev == '4'||prev == '5'||prev == '6'||prev == '7'||prev == '8'||prev == '9')
-                    {
-                        rslt = "*"+rslt;
-                    }
-
-                } catch(Exception e){}
-
-                /*
-                System.out.println(function.substring(0,i-valLen));
-                System.out.println(rslt);
-                System.out.println(function.substring(i+powLen));
-                */
-
-                function = function.substring(0,i-valLen)+rslt+function.substring(i+powLen);
-                length = function.length();
-
-            }
-        }
-
+        
         Double result = 0.0;
 
         ScriptEngineManager manager = new ScriptEngineManager();
@@ -155,7 +52,7 @@ public class Function
         return result;
     }
 
-    public String superscript(String str)
+    public static String superscript(String str)
     {
         str = str.replaceAll("0", "⁰");
         str = str.replaceAll("1", "¹");
@@ -185,10 +82,63 @@ public class Function
         sups.put('⁹','9');
         
         int size = expression.length();
+        int prevSymbol = -1;
+        int startpow = -1;
+        String power ="";
         for(int i = 0; i < size; i++)
         {
-            System.out.println(sups.get(expression.charAt(i)));
+           
+           try{
+               
+                if ( startpow == -1 ) startpow = i; 
+                char pow = sups.get(expression.charAt(i));
+                power += pow;
+            
+           }catch(Exception e){ 
+               
+               //String value = expression.substring(prevSymbol+1,startpow+1);
+               
+               if (!power.equals(""))
+               {
+                   
+                    if ( expression.charAt(i-2) == 'x') {
+                        
+                        String mathPow = "*Math.pow(x,"+power+")";
+                       
+                    } else {    
+                   
+                        //System.out.println((prevSymbol+1)+" "+(prevSymbol+startpow+2));
+                        String value = expression.substring((prevSymbol+1),(prevSymbol+startpow+2));
+                        //System.out.println(value);
+                        //System.out.println(power);
+
+                        String mathPow = "Math.pow("+value+","+power+")";
+                        expression = expression.substring(0,(prevSymbol+1)) + mathPow + expression.substring(i);
+                        //System.out.println(expression);
+                        size = expression.length();
+
+                        int valLen = value.length();
+                        int powLen = power.length();
+
+                        int sizeLen = valLen + powLen;
+                        int tmpLen = mathPow.length();
+
+                        i +=  (tmpLen-sizeLen);
+                    }    
+         
+               }    
+               power = "";
+           
+           }
+           
+           char symbol = expression.charAt(i);
+           if(symbol=='+'||symbol=='-'||symbol=='*'||symbol=='/'||symbol=='%'||symbol=='^'||symbol=='('||symbol==')')
+           {
+               prevSymbol = i;
+           }
+           
         }    
+        System.out.println(expression);
         return expression;
     }        
     
@@ -210,6 +160,12 @@ public class Function
 
         //System.out.println(result);
         System.out.println("time: " + duration);
+    
+        
+        //Double result2 = (Double)engine.eval("2+Math.pow(3, 2)");
+        //System.out.println(result2 + " *****************######");
+
+    
 
     }
     */
