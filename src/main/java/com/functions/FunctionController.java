@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.LineChart;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -29,35 +30,75 @@ public class FunctionController extends AnchorPane {
     
     @FXML public void drawGraph()
     {
-        //functiontxt.setText("2x"+Function.superscript("2")+"-1x"+Function.superscript("3"));   
-        Function func = new Function(functiontxt.getText()+"+0");
-        
-        XYChart.Series series1 = new XYChart.Series();
-        //series1.setName();
-        
-        functionDisplay.setTitle("Y = " + func.getFunction());
-
-        for(Double i = -5.0; i <= 5; i++)
-        {
-            Double yVal = func.solve(i);
-            series1.getData().add(new XYChart.Data(i, yVal));
+        try{
             
-            System.out.println("x: "+i + " " + "y: " + yVal);
-        }    
-        
-        functionDisplay.getData().clear();
-        functionDisplay.getData().addAll(series1);  
+            String tmpFunc = functiontxt.getText();
+            Function func = new Function(tmpFunc+"+0");
+
+            XYChart.Series series1 = new XYChart.Series();
+            series1.setName("Y = "+tmpFunc);
+
+            for(Double i = -5.0; i <= 5; i++)
+            {
+                Double yVal = func.solve(i);
+                series1.getData().add(new XYChart.Data(i, yVal));
+
+                System.out.println("x: "+i + " " + "y: " + yVal);
+            }    
+
+            functionDisplay.getData().clear();
+            functionDisplay.getData().addAll(series1); 
+            
+        } catch (Exception e) {}    
         
     }   
+    
+    @FXML private Button onebtn = new Button();
+    @FXML private Button twobtn = new Button();
+    @FXML private Button threebtn = new Button();
+    @FXML private Button fourbtn = new Button();
+    @FXML private Button fivebtn = new Button();
+    @FXML private Button sixbtn = new Button();
+    @FXML private Button sevenbtn = new Button();
+    @FXML private Button eightbtn = new Button();
+    @FXML private Button ninebtn = new Button();
+    @FXML private Button zerobtn = new Button();
+    @FXML private Button powbtn = new Button();
     
     Label power = new Label();
     
     @FXML private void printPower()
     {
         if (power.getText().equals("1")) {
+            
             power.setText("0");
+            
+            onebtn.setText("1");
+            twobtn.setText("2");
+            threebtn.setText("3");
+            fourbtn.setText("4");
+            fivebtn.setText("5");
+            sixbtn.setText("6");
+            sevenbtn.setText("7");
+            eightbtn.setText("8");
+            ninebtn.setText("9");
+            zerobtn.setText("0");
+            
         } else {
+            
             power.setText("1");
+            
+            onebtn.setText("¹");
+            twobtn.setText("²");
+            threebtn.setText("³");
+            fourbtn.setText("⁴");
+            fivebtn.setText("⁵");
+            sixbtn.setText("⁶");
+            sevenbtn.setText("⁷");
+            eightbtn.setText("⁸");
+            ninebtn.setText("⁹");
+            zerobtn.setText("⁰");
+            
         }   
         
     }        

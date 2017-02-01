@@ -73,16 +73,22 @@ public class Function
         int size = expression.length();
         for(int i = 0; i < size; i++)
         {
-            char tmpChar = expression.charAt(i);
-            if (tmpChar == 'x')
-            {
-                char tmpchar2 = expression.charAt(i-1);
-                if ( tmpchar2 != '+'||tmpchar2 != '-'||tmpchar2 != '*'||tmpchar2 != '/' )
+            try{
+                char tmpChar = expression.charAt(i);
+                if (tmpChar == 'x')
                 {
-                    expression = expression.substring(0,i)+"*"+expression.substring(i);
-                    i++;
-                }    
-            }    
+                    char tmpchar2 = expression.charAt(i-1);
+                    if ( tmpchar2 == '0'||tmpchar2 == '1'||tmpchar2 == '2'||tmpchar2 == '3'||tmpchar2 == '4'||tmpchar2 == '5'||tmpchar2 == '6'||tmpchar2 == '7'||tmpchar2 == '8'||tmpchar2 == '9' ) {
+                        expression = expression.substring(0,i)+"*"+expression.substring(i);
+                        i++;
+                        size++;
+                    } else if ( tmpchar2 == '+'||tmpchar2 == '-'||tmpchar2 == '*'||tmpchar2 == '/' ) {
+                        expression = expression.substring(0,i)+"1*"+expression.substring(i);
+                        i+=2;
+                        size+=2;
+                    }    
+                }
+            } catch (Exception e){}    
         }    
         
         
