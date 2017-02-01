@@ -69,6 +69,24 @@ public class Function
     
     public String arrangeExpression(String expression)
     {
+        
+        int size = expression.length();
+        for(int i = 0; i < size; i++)
+        {
+            char tmpChar = expression.charAt(i);
+            if (tmpChar == 'x')
+            {
+                char tmpchar2 = expression.charAt(i-1);
+                if ( tmpchar2 != '+'||tmpchar2 != '-'||tmpchar2 != '*'||tmpchar2 != '/' )
+                {
+                    expression = expression.substring(0,i)+"*"+expression.substring(i);
+                    i++;
+                }    
+            }    
+        }    
+        
+        
+        
         HashMap<Character,Character> sups = new HashMap<>();
         sups.put('⁰','0');
         sups.put('¹','1');
@@ -81,7 +99,7 @@ public class Function
         sups.put('⁸','8');
         sups.put('⁹','9');
         
-        int size = expression.length();
+        size = expression.length();
         int prevSymbol = -1;
         int startpow = -1;
         String power ="";
@@ -100,11 +118,26 @@ public class Function
                
                if (!power.equals(""))
                {
-                   
-                    if ( expression.charAt(i-2) == 'x') {
+                    //System.out.println(power);
+                    if ( expression.charAt(startpow-1) == 'x') {
                         
-                        String mathPow = "*Math.pow(x,"+power+")";
-                       
+                        String mathPow = "Math.pow(x,"+power+")";
+                        System.out.println(mathPow);
+                        expression = expression.substring(0,(startpow-1)) + mathPow + expression.substring(i);
+                        System.out.println(expression);
+                        size = expression.length();
+
+                        int valLen = 1;
+                        int powLen = power.length();
+
+                        int sizeLen = valLen + powLen;
+                        int tmpLen = mathPow.length();
+
+                        i +=  (tmpLen-sizeLen);
+                        startpow = -1;
+                        
+                            
+                        
                     } else {    
                    
                         //System.out.println((prevSymbol+1)+" "+(prevSymbol+startpow+2));
@@ -114,7 +147,7 @@ public class Function
 
                         String mathPow = "Math.pow("+value+","+power+")";
                         expression = expression.substring(0,(prevSymbol+1)) + mathPow + expression.substring(i);
-                        //System.out.println(expression);
+                        System.out.println(expression);
                         size = expression.length();
 
                         int valLen = value.length();
@@ -124,8 +157,11 @@ public class Function
                         int tmpLen = mathPow.length();
 
                         i +=  (tmpLen-sizeLen);
+                        startpow = -1;
                     }    
          
+               } else {
+                   startpow = -1;
                }    
                power = "";
            
@@ -138,6 +174,7 @@ public class Function
            }
            
         }    
+        
         System.out.println(expression);
         return expression;
     }        
