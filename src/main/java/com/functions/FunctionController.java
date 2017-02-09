@@ -194,14 +194,21 @@ public class FunctionController extends AnchorPane {
     }
     
     @FXML private void printPlus()
-    {
-        functiontxt.setText(functiontxt.getText()+"+");   
+    { 
+        if (power.getText().equals("1")) {
+            functiontxt.setText(functiontxt.getText()+"⁺");            
+        } else {
+            functiontxt.setText(functiontxt.getText()+"+"); 
+        }
     }
     
     @FXML private void printSub()
     {
-        functiontxt.setText(functiontxt.getText()+"-");
-       
+        if (power.getText().equals("1")) {
+            functiontxt.setText(functiontxt.getText()+"⁻");            
+        } else {
+            functiontxt.setText(functiontxt.getText()+"-");
+        }
     }
     
     @FXML private void printMul()
@@ -217,7 +224,7 @@ public class FunctionController extends AnchorPane {
     @FXML private void printOpenBrack()
     {
         if (power.getText().equals("1")) {
-            functiontxt.setText(functiontxt.getText()+"¹");            
+            functiontxt.setText(functiontxt.getText()+"⁽");            
         } else {
             functiontxt.setText(functiontxt.getText()+"(");
         }
@@ -226,7 +233,7 @@ public class FunctionController extends AnchorPane {
     @FXML private void printCloseBrack()
     {
         if (power.getText().equals("1")) {
-            functiontxt.setText(functiontxt.getText()+"¹");            
+            functiontxt.setText(functiontxt.getText()+"⁾");            
         } else {
             functiontxt.setText(functiontxt.getText()+")");
         }
