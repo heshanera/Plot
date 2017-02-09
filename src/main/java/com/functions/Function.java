@@ -5,7 +5,6 @@
  */
 package com.functions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import javax.script.*;
 
@@ -64,6 +63,18 @@ public class Function
         str = str.replaceAll("7", "⁷");
         str = str.replaceAll("8", "⁸");
         str = str.replaceAll("9", "⁹");
+        
+        str = str.replaceAll("x", "ˣ");
+        
+        str = str.replaceAll("(", "⁽");
+        str = str.replaceAll(")", "⁾");
+        str = str.replaceAll("+", "⁺");
+        str = str.replaceAll("-", "⁻");
+        str = str.replaceAll("*", "*");
+        str = str.replaceAll("/", "/");
+        str = str.replaceAll(".", ".");
+        
+        
         return str;
     }
     
@@ -104,6 +115,19 @@ public class Function
         sups.put('⁷','7');
         sups.put('⁸','8');
         sups.put('⁹','9');
+        
+        
+        sups.put('ˣ','x');
+        
+        sups.put('⁽','(');
+        sups.put('⁾',')');
+        sups.put('⁺','+');
+        sups.put('⁻','-');
+        /*
+        sups.put('*','*');
+        sups.put('/','/');
+        sups.put('.','.');
+        */
         
         size = expression.length();
         int prevSymbol = -1;

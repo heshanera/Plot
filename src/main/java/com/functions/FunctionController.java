@@ -65,6 +65,15 @@ public class FunctionController extends AnchorPane {
     @FXML private Button zerobtn = new Button();
     @FXML private Button powbtn = new Button();
     
+    @FXML private Button plusbtn = new Button();
+    @FXML private Button subbtn = new Button();
+    @FXML private Button divbtn = new Button();
+    @FXML private Button mulbtn = new Button();
+    @FXML private Button openbrackbtn = new Button();
+    @FXML private Button closebrackbtn = new Button();
+    
+    @FXML private Button xbtn = new Button();
+    
     Label power = new Label();
     
     @FXML private void printPower()
@@ -84,6 +93,15 @@ public class FunctionController extends AnchorPane {
             ninebtn.setText("9");
             zerobtn.setText("0");
             
+            plusbtn.setText("+");
+            subbtn.setText("-");
+            divbtn.setText("/");
+            mulbtn.setText("*");
+            openbrackbtn.setText("(");
+            closebrackbtn.setText(")");
+
+            xbtn.setText("x");
+            
         } else {
             
             power.setText("1");
@@ -98,6 +116,15 @@ public class FunctionController extends AnchorPane {
             eightbtn.setText("⁸");
             ninebtn.setText("⁹");
             zerobtn.setText("⁰");
+            
+            plusbtn.setText("⁺");
+            subbtn.setText("⁻");
+            divbtn.setText("/");
+            mulbtn.setText("*");
+            openbrackbtn.setText("⁽");
+            closebrackbtn.setText("⁾");
+
+            xbtn.setText("ˣ");
             
         }   
         
@@ -213,12 +240,20 @@ public class FunctionController extends AnchorPane {
     
     @FXML private void printMul()
     {
-        functiontxt.setText(functiontxt.getText()+"*");
+        if (power.getText().equals("1")) {
+            functiontxt.setText(functiontxt.getText()+"*");            
+        } else {
+            functiontxt.setText(functiontxt.getText()+"*");
+        }
     }
     
     @FXML private void printDiv()
     {
-        functiontxt.setText(functiontxt.getText()+"/");
+        if (power.getText().equals("1")) {
+            functiontxt.setText(functiontxt.getText()+"/");            
+        } else {
+            functiontxt.setText(functiontxt.getText()+"/");
+        }
     }
     
     @FXML private void printOpenBrack()
@@ -242,7 +277,7 @@ public class FunctionController extends AnchorPane {
     @FXML private void printX()
     {
         if (power.getText().equals("1")) {
-            functiontxt.setText(functiontxt.getText()+"¹");            
+            functiontxt.setText(functiontxt.getText()+"ˣ");            
         } else {
             functiontxt.setText(functiontxt.getText()+"x");
         }
@@ -251,7 +286,7 @@ public class FunctionController extends AnchorPane {
     @FXML private void printPoint()
     {
         if (power.getText().equals("1")) {
-            functiontxt.setText(functiontxt.getText()+"¹");            
+            functiontxt.setText(functiontxt.getText()+".");            
         } else {
             functiontxt.setText(functiontxt.getText()+".");
         }
